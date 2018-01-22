@@ -1,0 +1,56 @@
+﻿@model ListProjectionWithMovieViewModel
+
+@{
+    ViewData["Title"] = "Cinema Program";
+}
+
+<div class="row">
+    @foreach (var proj in Model.Projections)
+    {
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">@proj.Movie</div>
+                    <small>start: @proj.StartTime:00 - @proj.Date.ToShortDateString()</small>
+                    <a asp-action="Details" asp-route-id="@proj.Id" class="pull-right">Details</a>
+                </div>
+                <div class="panel-body">
+                    <img src="@proj.MovieImage" alt="@proj.Movie" class="img-responsive" style="height: 450px;" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="text-center">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" asp-controller="Cinema" asp-action="Index" asp-route-page=@Model.PreviousPage>&laquo;</a>
+        </li>
+        @if (Model.PreviousPage != Model.CurrentPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-controller="Cinema" asp-action="Index" asp-route-page=@Model.PreviousPage>
+                    @Model.PreviousPage
+                </a>
+            </li>
+        }
+
+        <li class="page-item active">
+            <a class="page-link" asp-controller="Cinema" asp-action="Index" asp-route-page=@Model.CurrentPage>
+                @Model.CurrentPage
+            </a>
+        </li>
+        @if (Model.CurrentPage != Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-controller="Cinema" asp-action="Index" asp-route-page=@Model.NextPage>
+                    @Model.NextPage
+                </a>
+            </li>
+        }
+        <li class="page-item">
+            <a class="page-link" asp-controller="Cinema" asp-action="Index" asp-route-page=@Model.NextPage>&raquo;</a>
+        </li>
+    </ul>
+</div>

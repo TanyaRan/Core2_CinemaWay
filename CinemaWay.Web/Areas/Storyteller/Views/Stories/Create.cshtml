@@ -1,0 +1,46 @@
+﻿@model CreateStoryFormModel
+
+@{
+    ViewData["Title"] = "Create Article";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl"></label>
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewOf"></label>
+                <select asp-for="ReviewOf" asp-items="Html.GetEnumSelectList<ReviewOf>()" class="form-control"></select>
+                <span asp-validation-for="ReviewOf" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label asp-for="Content"></label>
+                <textarea asp-for="Content" class="form-control" rows="15"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Story</button>
+    </div>
+</form>
+    
+
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+    <script>tinymce.init({ selector:'textarea' });</script>
+}

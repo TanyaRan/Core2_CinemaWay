@@ -1,0 +1,85 @@
+﻿@model AdminListMoviesViewModel
+
+@{
+    ViewData["Title"] = "Movies Administration";
+}
+
+<h2>
+    @ViewData["Title"]
+    <span class="pull-right"><a class="btn btn-lg btn-primary" asp-controller="Movies" asp-action="Create">Add Movie</a></span>
+</h2>
+
+<table class="table table-hovered">
+    <thead>
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Genre
+            </th>
+            <th>
+                Director
+            </th>
+            <th>
+                Cast
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model.Movies)
+        {
+            <tr>
+                <td>
+                    <img src="@movie.ImageUrl" alt="@movie.Name" width="150"/>
+                </td>
+                <td>
+                    @movie.Name
+                </td>
+                <td>
+                    @movie.Genre
+                </td>
+                <td>
+                    @movie.Director
+                </td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-center">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" asp-controller="Movies" asp-action="Index" asp-route-page=@Model.PreviousPage>&laquo;</a>
+        </li>
+        @if (Model.PreviousPage != Model.CurrentPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-controller="Movies" asp-action="Index" asp-route-page=@Model.PreviousPage>
+                    @Model.PreviousPage
+                </a>
+            </li>
+        }
+
+        <li class="page-item active">
+            <a class="page-link" asp-controller="Movies" asp-action="Index" asp-route-page=@Model.CurrentPage>
+                @Model.CurrentPage
+            </a>
+        </li>
+        @if (Model.CurrentPage != Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-controller="Movies" asp-action="Index" asp-route-page=@Model.NextPage>
+                    @Model.NextPage
+                </a>
+            </li>
+        }
+        <li class="page-item">
+            <a class="page-link" asp-controller="Movies" asp-action="Index" asp-route-page=@Model.NextPage>&raquo;</a>
+        </li>
+    </ul>
+</div>

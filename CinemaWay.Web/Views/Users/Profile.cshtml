@@ -1,0 +1,59 @@
+﻿@model UserProfileModel
+
+@{ 
+    ViewData["Title"] = "Profile";
+}
+
+<h2>@ViewData["Title"] of @Model.FirstName @Model.LastName</h2>
+
+@if (Model.UserName == User.Identity.Name)
+{
+    <a asp-area="" 
+       asp-controller="Manage"
+       asp-action="Index"
+       class="btn btn-primary">
+        Edit Profile
+    </a>
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Movie</th>
+            <th>Grade</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>        
+        @foreach (var projection in Model.Tickets)
+        {
+            <tr>
+                <td>
+                    @projection.Date.ToShortDateString()
+                </td>
+                <td>
+                    <a asp-controller="Cinema"
+                       asp-action="Details"
+                       asp-route-id="@projection.Id">
+                        @projection.Movie
+                    </a>
+                </td>
+                <td>
+                    @(projection.Grade == null 
+                    ? "No Grade" 
+                    : projection.Grade.ToString())
+                </td>
+                @if (projection.Date < DateTime.UtcNow)
+                {
+                    <td>
+                        <form asp-action="AddGrade" asp-route-id="@projection.Id" method="post">
+                            <select name="grade" asp-items="@Html.GetEnumSelectList<Grade>()"></select>
+                            <input type="submit" class="btn btn-default" value="Add Grade" />
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

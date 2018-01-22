@@ -1,0 +1,70 @@
+﻿@model AdminListActorsViewModel
+
+@{
+    ViewData["Title"] = "Actors Administration";
+}
+
+<h2>
+    @ViewData["Title"]
+<span class="pull-right"><a class="btn btn-lg btn-primary" asp-controller="Actors" asp-action="Create">Add Actor</a></span>
+</h2>
+
+<table class="table table-hovered">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Image
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var actor in Model.Actors)
+        {
+            <tr>
+                <td>
+                    @actor.FirstName @actor.LastName
+                </td>
+                <td>
+                    <img src="@actor.ImageUrl" alt="@actor.FirstName" width="150" />
+                </td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-center">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" asp-controller="Actors" asp-action="Index" asp-route-page=@Model.PreviousPage>&laquo;</a>
+        </li>
+        @if (Model.PreviousPage != Model.CurrentPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-controller="Actors" asp-action="Index" asp-route-page=@Model.PreviousPage>
+                    @Model.PreviousPage
+                </a>
+            </li>
+        }
+
+        <li class="page-item active">
+            <a class="page-link" asp-controller="Actors" asp-action="Index" asp-route-page=@Model.CurrentPage>
+                @Model.CurrentPage
+            </a>
+        </li>
+        @if (Model.CurrentPage != Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-controller="Actors" asp-action="Index" asp-route-page=@Model.NextPage>
+                    @Model.NextPage
+                </a>
+            </li>
+        }
+        <li class="page-item">
+            <a class="page-link" asp-controller="Actors" asp-action="Index" asp-route-page=@Model.NextPage>&raquo;</a>
+        </li>
+    </ul>
+</div>

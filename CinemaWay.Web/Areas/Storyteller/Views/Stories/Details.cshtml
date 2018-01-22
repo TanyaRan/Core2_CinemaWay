@@ -1,0 +1,18 @@
+﻿@model StoryDetailsModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h4>
+    <em>published by @Model.Author on @Model.PublishDate.ToShortDateString()</em>
+    <span class="pull-right text-success">@Model.ReviewOf Review</span>
+</h4>
+<div>
+    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-responsive" />
+</div>
+<div>
+    @Html.Raw(Model.Content)
+</div>
+
