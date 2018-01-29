@@ -6,13 +6,10 @@
 
 <div class="row">
     <form asp-action="Search">
-        <div class="col-md-6 text-center">
-            <input asp-for="SearchText" class="form-control" placeholder="Search..." required>
+        <div class="col-sm-6">
+            <input asp-for="SearchText" class="form-control" placeholder="Search Movie" required>
         </div>
-        <div class="col-md-6 text-center">
-            <input asp-for="SearchInMovies">
-            <label asp-for="SearchInMovies"></label>
-
+        <div class="col-sm-6">
             <input asp-for="SearchInThemes">
             <label asp-for="SearchInThemes"></label>
 

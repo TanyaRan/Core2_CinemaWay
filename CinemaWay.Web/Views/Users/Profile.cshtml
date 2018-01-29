@@ -21,6 +21,7 @@
         <tr>
             <th>Date</th>
             <th>Movie</th>
+            <th>Ideas</th>
             <th>Grade</th>
             <th></th>
         </tr>
@@ -38,6 +39,14 @@
                        asp-route-id="@projection.Id">
                         @projection.Movie
                     </a>
+                </td>
+                <td>
+                    Add your ideas in .zip
+                    <form asp-action="SubmitIdeas" asp-route-id="@projection.Id" method="post" enctype="multipart/form-data">
+                        <input type="file" name="ideas" style="display: none" accept=".zip" />
+                        <button type="button" class="btn btn-success" onclick="document.getElementsByName('ideas')[0].click()">Choose your file</button>
+                        <input type="submit" value="Upload Ideas" class="btn btn-primary" />
+                    </form>
                 </td>
                 <td>
                     @(projection.Grade == null 

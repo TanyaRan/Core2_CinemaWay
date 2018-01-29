@@ -2,20 +2,21 @@
 {
     using Microsoft.EntityFrameworkCore.Migrations;
 
-    public partial class GradeColumn : Migration
+    public partial class SuggestionsSubmissionColumn : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Grade",
+            migrationBuilder.AddColumn<byte[]>(
+                name: "SuggestionsSubmission",
                 table: "UserProjections",
+                maxLength: 2097152,
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Grade",
+                name: "SuggestionsSubmission",
                 table: "UserProjections");
         }
     }

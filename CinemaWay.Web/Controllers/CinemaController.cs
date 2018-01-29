@@ -8,6 +8,7 @@
     using Models.Cinema;
     using Services.Cinema;
     using Services.Cinema.Models;
+    using System;
     using System.Threading.Tasks;
 
     public class CinemaController : Controller
@@ -50,6 +51,7 @@
                 return RedirectToAction(nameof(All));
             }
 
+            // TODO: Fix Search logic
             if (model.SearchInMovies)
             {
                 viewModel.Projections = await this.cinema.FindAsyncMovie(model.SearchText);
@@ -97,7 +99,7 @@
                 return BadRequest();
             }
 
-            TempData.AddSuccessMessage("You buy a ticket.");
+            TempData.AddSuccessMessage("You booked a ticket.");
 
             return RedirectToAction(nameof(Details), new { id });
         }
@@ -118,6 +120,23 @@
             TempData.AddSuccessMessage("Sorry to give up!");
 
             return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DownloadTicket(int id)
+        {
+            var userId = this.userManager.GetUserId(User);
+
+            var ticket = await this.cinema.GetPdfTicket(id, userId);
+
+            if (ticket == null)
+            {
+                return BadRequest();
+            }
+
+            var fileName = string.Format("CinemaWay_{0}.{1}.{2}.pdf", DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year);
+
+            return File(ticket, "application/pdf", fileName);
         }
     }
 }

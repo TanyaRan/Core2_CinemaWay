@@ -15,10 +15,13 @@
     public class CinemaService : ICinemaService
     {
         private readonly CinemaWayDbContext db;
+        private readonly IPdfGenerator pdfGenerator;
 
-        public CinemaService(CinemaWayDbContext db)
+        public CinemaService(CinemaWayDbContext db,
+            IPdfGenerator pdfGenerator)
         {
             this.db = db;
+            this.pdfGenerator = pdfGenerator;
         }
 
         public async Task<IEnumerable<ListProjectionWithMovieModel>> Active(int page = 1)
@@ -50,7 +53,7 @@
 
         public async Task<IEnumerable<ListProjectionWithMovieModel>> FindAsyncMovie(string searchText)
         {
-            searchText = searchText ?? "";
+            searchText = searchText ?? string.Empty;
 
             return await this.db
                 .Projections
@@ -62,7 +65,7 @@
 
         public async Task<IEnumerable<ListProjectionWithMovieModel>> FindAsyncTheme(string searchText)
         {
-            searchText = searchText ?? "";
+            searchText = searchText ?? string.Empty;
 
             return await this.db
                 .Projections
@@ -142,5 +145,46 @@
                     VisitorsCount = p.Visitors.Count
                 })
                 .FirstOrDefaultAsync();
+
+        public async Task<byte[]> GetPdfTicket(int projectionId, string userId)
+        {
+            var bookedTicket = await this.db
+                .FindAsync<UserProjections>(projectionId, userId);
+
+            if (bookedTicket == null)
+            {
+                return null;
+            }
+
+            var ticket = await this.db
+                .Projections
+                .Where(p => p.Id == projectionId)
+                .Select(p => new
+                {
+                    Movie = p.Movie.Name,
+                    Theme = p.Theme.Title,
+                    Date = p.Date,
+                    StartTime = p.StartTime,
+                    FirstName = p.Visitors
+                        .Where(v => v.Visitor.Id == userId)
+                        .Select(v => v.Visitor.FirstName)
+                        .FirstOrDefault(),
+                    LastName = p.Visitors
+                        .Where(v => v.Visitor.Id == userId)
+                        .Select(v => v.Visitor.LastName)
+                        .FirstOrDefault()
+                })
+                .FirstOrDefaultAsync();
+
+            return this.pdfGenerator.GeneratePdfFromHtml(
+                string.Format(PdfTicketFormat,
+                ticket.Movie,
+                ticket.Theme,
+                ticket.Date.ToShortDateString(),
+                ticket.StartTime,
+                ticket.FirstName,
+                ticket.LastName,
+                DateTime.UtcNow.ToShortDateString()));
+        }
     }
 }

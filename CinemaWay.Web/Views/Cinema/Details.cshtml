@@ -12,7 +12,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <img src="@Model.Projection.MovieImage" alt="@Model.Projection.Movie" style="width: 450px;" />
+        <img src="@Model.Projection.MovieImage" alt="@Model.Projection.Movie" style="max-height: 600px;" />
     </div>
     <div class="col-md-6">
         <h3>Week Theme : @Model.Projection.Theme</h3>
@@ -21,7 +21,8 @@
         {
             if (Model.UserBookedATicket)
             {
-                <a class="btn btn-info">You have a ticket</a>
+                <a class="btn btn-info">You booked a ticket</a>
+                <a asp-action="DownloadTicket" asp-route-id="@Model.Projection.Id" class="btn btn-primary">Download your Ticket</a>
 
                 <form asp-action="RefuseTicket" asp-route-id="@Model.Projection.Id" method="post">
                     <input type="submit" class="btn btn-danger" value="Refuse the Ticket" />

@@ -9,5 +9,7 @@
         Task<UserProfileModel> ProfileAsync(string username);
 
         Task<bool> AddGrade(int projectionId, string visitorId, Grade grade);
+
+        Task<bool> SaveIdeas(int projectionId, string visitorId, byte[] ideasSubmission);
     }
 }

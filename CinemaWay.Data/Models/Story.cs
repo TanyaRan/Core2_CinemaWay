@@ -15,7 +15,6 @@
         public string Title { get; set; }
 
         [Required]
-        [MaxLength(DescriptionMaxLength)]
         public string Content { get; set; }
 
         [Required]

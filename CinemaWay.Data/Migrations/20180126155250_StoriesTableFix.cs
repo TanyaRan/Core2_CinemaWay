@@ -2,7 +2,7 @@
 {
     using Microsoft.EntityFrameworkCore.Migrations;
 
-    public partial class UserRoles : Migration
+    public partial class StoriesTableFix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

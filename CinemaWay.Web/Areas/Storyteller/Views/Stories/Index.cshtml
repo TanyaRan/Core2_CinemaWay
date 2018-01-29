@@ -15,7 +15,7 @@
                     <a asp-action="Details" asp-route-id="@story.Id" asp-route-title="@story.Title.ToFriendlyUrl()" class="pull-right">Details</a>
                 </div>
                 <div class="panel-body">
-                    <img src="@story.ImageUrl" alt="@story.Title" class="img-responsive" />
+                    <img src="@story.ImageUrl" alt="@story.Title" class="img-responsive" style="max-height: 250px;"/>
                 </div>
             </div>
         </div>

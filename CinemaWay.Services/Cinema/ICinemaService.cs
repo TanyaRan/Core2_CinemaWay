@@ -25,5 +25,7 @@
         Task<bool> RefuseTicket(int projectionId, string userId);
 
         Task<bool> UserBookedATicket(int projectionId, string userId);
+
+        Task<byte[]> GetPdfTicket(int projectionId, string userId);
     }
 }

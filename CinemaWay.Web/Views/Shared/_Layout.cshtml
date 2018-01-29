@@ -59,7 +59,8 @@
                 <p>@TempData[WebConstants.TempDataSuccessMessageKey]</p>
             </div>
         }
-        else if (TempData.ContainsKey(WebConstants.TempDataErrorMessageKey))
+
+        @if (TempData.ContainsKey(WebConstants.TempDataErrorMessageKey))
         {
             <div class="alert alert-danger fade in alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>

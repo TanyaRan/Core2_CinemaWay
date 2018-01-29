@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
-
-namespace CinemaWay.Data.Migrations
+﻿namespace CinemaWay.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class MovePriceToTableProjections : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

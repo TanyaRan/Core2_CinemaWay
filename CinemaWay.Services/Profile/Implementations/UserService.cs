@@ -40,5 +40,21 @@
             .Where(u => u.Id == id)
             .ProjectTo<UserProfileModel>(new { visitorId = id })
             .FirstOrDefaultAsync();
+
+        public async Task<bool> SaveIdeas(int projectionId, string visitorId, byte[] ideasSubmission)
+        {
+            var userWithTicket = await this.db
+                .FindAsync<UserProjections>(projectionId, visitorId);
+
+            if (userWithTicket == null)
+            {
+                return false;
+            }
+
+            userWithTicket.IdeasSubmission = ideasSubmission;
+            await this.db.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

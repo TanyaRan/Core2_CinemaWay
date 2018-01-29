@@ -8,8 +8,8 @@ namespace CinemaWay.Data.Migrations
     using System;
 
     [DbContext(typeof(CinemaWayDbContext))]
-    [Migration("20180107105846_SmallDataAnnotationsFixes")]
-    partial class SmallDataAnnotationsFixes
+    [Migration("20180127154519_ChangeName_IdeasSubmission")]
+    partial class ChangeName_IdeasSubmission
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,14 +28,14 @@ namespace CinemaWay.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(100);
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasMaxLength(250);
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(50);
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -67,23 +67,6 @@ namespace CinemaWay.Data.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("CinemaWay.Data.Models.Genre", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Genres");
-                });
-
             modelBuilder.Entity("CinemaWay.Data.Models.Movie", b =>
                 {
                     b.Property<int>("Id")
@@ -94,21 +77,19 @@ namespace CinemaWay.Data.Migrations
 
                     b.Property<string>("Director")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(100);
 
-                    b.Property<int>("GenreId");
+                    b.Property<int>("Genre");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasMaxLength(250);
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GenreId");
 
                     b.ToTable("Movies");
                 });
@@ -139,6 +120,8 @@ namespace CinemaWay.Data.Migrations
 
                     b.Property<int>("MovieId");
 
+                    b.Property<decimal>("Price");
+
                     b.Property<int>("StartTime");
 
                     b.Property<int>("ThemeId");
@@ -152,6 +135,35 @@ namespace CinemaWay.Data.Migrations
                     b.HasIndex("ThemeId");
 
                     b.ToTable("Projections");
+                });
+
+            modelBuilder.Entity("CinemaWay.Data.Models.Story", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AuthorId");
+
+                    b.Property<string>("Content")
+                        .IsRequired();
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.Property<DateTime>("PublishDate");
+
+                    b.Property<int>("ReviewOf");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("Stories");
                 });
 
             modelBuilder.Entity("CinemaWay.Data.Models.Theme", b =>
@@ -172,26 +184,6 @@ namespace CinemaWay.Data.Migrations
                     b.ToTable("Themes");
                 });
 
-            modelBuilder.Entity("CinemaWay.Data.Models.Ticket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<int>("ProjectionId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Tickets");
-                });
-
             modelBuilder.Entity("CinemaWay.Data.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -209,11 +201,11 @@ namespace CinemaWay.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(100);
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(100);
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -252,6 +244,24 @@ namespace CinemaWay.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("CinemaWay.Data.Models.UserProjections", b =>
+                {
+                    b.Property<int>("ProjectionId");
+
+                    b.Property<string>("VisitorId");
+
+                    b.Property<int?>("Grade");
+
+                    b.Property<byte[]>("IdeasSubmission")
+                        .HasMaxLength(2097152);
+
+                    b.HasKey("ProjectionId", "VisitorId");
+
+                    b.HasIndex("VisitorId");
+
+                    b.ToTable("UserProjections");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -375,14 +385,6 @@ namespace CinemaWay.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("CinemaWay.Data.Models.Movie", b =>
-                {
-                    b.HasOne("CinemaWay.Data.Models.Genre", "Genre")
-                        .WithMany("Movies")
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("CinemaWay.Data.Models.MovieActor", b =>
                 {
                     b.HasOne("CinemaWay.Data.Models.Actor", "Actor")
@@ -413,16 +415,24 @@ namespace CinemaWay.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("CinemaWay.Data.Models.Ticket", b =>
+            modelBuilder.Entity("CinemaWay.Data.Models.Story", b =>
+                {
+                    b.HasOne("CinemaWay.Data.Models.User", "Author")
+                        .WithMany("Stories")
+                        .HasForeignKey("AuthorId");
+                });
+
+            modelBuilder.Entity("CinemaWay.Data.Models.UserProjections", b =>
                 {
                     b.HasOne("CinemaWay.Data.Models.Projection", "Projection")
-                        .WithMany("Tickets")
+                        .WithMany("Visitors")
                         .HasForeignKey("ProjectionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CinemaWay.Data.Models.User")
+                    b.HasOne("CinemaWay.Data.Models.User", "Visitor")
                         .WithMany("Tickets")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("VisitorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
