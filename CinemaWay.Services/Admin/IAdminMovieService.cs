@@ -18,6 +18,6 @@
 
         Task<int> Total();
 
-        Task<IEnumerable<ShortMovieModel>> AllTitles();
+        Task<IEnumerable<ShortMovieModel>> All();
     }
 }

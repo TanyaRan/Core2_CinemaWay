@@ -12,7 +12,6 @@
 
     using static Data.DataConstants;
 
-    [Authorize]
     public class UsersController : Controller
     {
         private readonly IUserService users;
@@ -28,6 +27,7 @@
             this.projections = projections;
         }
 
+        [Authorize]
         public async Task<IActionResult> Profile(string username)
         {
             var user = await this.userManager.FindByNameAsync(username);
@@ -43,6 +43,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddGrade(int id, Grade grade)
         {
             var userId = this.userManager.GetUserId(User);
@@ -71,6 +72,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> SubmitIdeas(int id, IFormFile ideas)
         {
             var userId = this.userManager.GetUserId(User);

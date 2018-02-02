@@ -32,7 +32,7 @@
         public async Task<int> Total()
             => await this.db.Movies.CountAsync();
 
-        public async Task<IEnumerable<ShortMovieModel>> AllTitles()
+        public async Task<IEnumerable<ShortMovieModel>> All()
             => await this.db
             .Movies
             .ProjectTo<ShortMovieModel>()

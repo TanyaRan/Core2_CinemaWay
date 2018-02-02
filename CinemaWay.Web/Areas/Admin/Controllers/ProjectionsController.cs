@@ -91,7 +91,7 @@
 
         private async Task<IEnumerable<SelectListItem>> GetMovies()
         {
-            var allMovies = await this.movies.AllTitles();
+            var allMovies = await this.movies.All();
 
             var movieListItems = allMovies
                 .Select(m => new SelectListItem
